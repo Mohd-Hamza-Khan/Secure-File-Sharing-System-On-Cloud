@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% block content %}
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+{% endif %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <!-- Reduced width from col-md-6 to col-md-4 -->
+      <div class="card shadow-sm">
+        <div class="card-header text-center bg-primary text-white">
+          <h4 class="mb-0">Login</h4>
+        </div>
+        <div class="card-body text-center">
+          <!-- Center all content inside -->
+          <form method="post" class="text-start">
+            <!-- Align labels left -->
+            {% csrf_token %} {{ form.as_p }}
+            <div class="d-grid mt-3">
+              <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
