@@ -67,6 +67,7 @@ This project encrypts uploaded files (using Fernet symmetric encryption), saves 
 ## Notes & troubleshooting
 - If you see errors like `no such table: core_securefile` or missing columns (OperationalError), run `makemigrations` and `migrate`. If models changed after initial migrations, consider creating new migrations or resetting the DB in development.
 - Ensure the model field used to store file path matches the database column type (use FileField or CharField// filepath: A:\HamzaDesk\IUL\4th_Year-7th-sem\final_year_project(Minor-prj)\Updated_Project\SECURE-FILE-SHARING-SYSTEM\README.md
+<<<<<<< HEAD
 # SECURE-FILE-SHARING-SYSTEM
 
 Simple Django application to upload, store and share files in encrypted form.
@@ -136,3 +137,5 @@ This project encrypts uploaded files (using Fernet symmetric encryption), saves 
 ## Notes & troubleshooting
 - If you see errors like `no such table: core_securefile` or missing columns (OperationalError), run `makemigrations` and `migrate`. If models changed after initial migrations, consider creating new migrations or resetting the DB in development.
 - Ensure the model field used to store file path matches the database column type (use FileField or CharField
+=======
+>>>>>>> 75fc39a841c78d3fdb5748a61472b30a2803dbff
