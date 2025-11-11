@@ -2,7 +2,7 @@
 {% block content %}
   <h3>Uploaded Files</h3>
   <table class="table">
-    <thead><tr><th>Filename</th><th>Uploaded By</th><th>Action</th></tr></thead>
+    <thead><tr><th>Filename</th><th>Reciever</th><th>Action</th></tr></thead>
     <tbody>
       {% for f in files %}
         <tr>
@@ -12,7 +12,7 @@
             {% if user.is_authenticated %}
               <a href="{% url 'download' f.pk %}" class="btn btn-sm btn-primary">Download (decrypt)</a>
             {% else %}
-              <span class="text-muted">Login to download</span>
+              <span class="text-muted">Login to download the file</span>
             {% endif %}
           </td>
         </tr>

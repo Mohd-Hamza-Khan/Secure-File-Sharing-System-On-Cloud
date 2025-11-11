@@ -41,42 +41,6 @@ def register(request):
 
     return render(request, 'register.html', {'form': form})
 
-# @login_required
-# def upload_view(request):
-#     if request.method == "POST":
-#         form = UploadForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             uploaded_file = form.cleaned_data["file"]
-#             raw_data = uploaded_file.read()
-
-#             # Encrypt the file content
-#             encrypted_data = get_fernet().encrypt(raw_data)
-
-#             # Create encrypted directory if it doesn't exist
-#             encrypted_dir = os.path.join(settings.MEDIA_ROOT, "encrypted")
-#             os.makedirs(encrypted_dir, exist_ok=True)
-
-#             # Generate encrypted file path
-#             encrypted_filename = uploaded_file.name + ".enc"
-#             save_path = os.path.join(encrypted_dir, encrypted_filename)
-
-#             # Write the encrypted data to a file
-#             with open(save_path, "wb") as out_file:
-#                 out_file.write(encrypted_data)
-
-#             # Save the file record to the model
-#             relative_path = f"encrypted/{encrypted_filename}"
-#             SecureFile.objects.create(
-#                 filename=uploaded_file.name,
-#                 encrypted_file=relative_path
-#             )
-
-#             return redirect("index")
-#     else:
-#         form = UploadForm()
-
-#     return render(request, "upload.html", {"form": form})
-
 
 @login_required
 def file_upload_view(request):
