@@ -1,5 +1,3 @@
-# from .forms import UploadForm
-# from rest_framework.authtoken.models import Token
 import os
 from django.shortcuts import render, redirect
 from django.conf import settings
@@ -82,35 +80,34 @@ def file_upload_view(request):
     return render(request, 'file_upload.html', {'form': form})
 
 
+def render_error(request, message, status=400):
+    """Render a centralized error page with a custom message."""
+    context = {"message": message}
+    return render(request, "error.html", context, status=status)
+
 from django.http import HttpResponse
-from django.http import HttpResponseBadRequest, Http404
-from django.http import HttpResponseNotFound
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 import logging
+from django.contrib.auth import logout
+
 
 logger = logging.getLogger(__name__)
 
-from django.http import HttpResponseForbidden
 
 @login_required
 def download_decrypt(request, pk):
     try:
-        # Get the file object or return 404
         obj = get_object_or_404(SecureFile, pk=pk)
 
-        # ✅ Only allow access if the logged-in user is the receiver
         if request.user != obj.uploaded_by:
-            return HttpResponseForbidden("You are not authorized to download this file.")
+            return render_error(request, "You are not authorized to download this file.", status=403)
 
-        # Full path to the encrypted file
         path = os.path.join(settings.MEDIA_ROOT, obj.encrypted_file.name)
-
-        # Check if file exists
         if not os.path.exists(path):
             logger.warning(f"File not found on disk: {path}")
-            return HttpResponseNotFound("Encrypted file not found.")
+            return render_error(request, "Encrypted file not found.", status=404)
 
-        # Read and decrypt file
         with open(path, "rb") as fh:
             encrypted_data = fh.read()
 
@@ -118,15 +115,28 @@ def download_decrypt(request, pk):
             decrypted_data = get_fernet().decrypt(encrypted_data)
         except Exception as e:
             logger.error(f"Decryption failed for file {obj.pk}: {e}")
-            return HttpResponseBadRequest("Invalid or corrupted encryption token.")
+            return render_error(request, "Invalid or corrupted encryption token.", status=400)
 
-        # Return decrypted file as download
         response = HttpResponse(decrypted_data, content_type="application/octet-stream")
         response["Content-Disposition"] = f'attachment; filename="{obj.filename}"'
         return response
 
     except Http404:
-        return HttpResponseNotFound("Secure file not found.")
+        return render_error(request, "Secure file not found.", status=404)
+
     except Exception as e:
         logger.exception(f"Unexpected error during download_decrypt: {e}")
-        return HttpResponse("Internal server error.", status=500)
+        return render_error(request, "Internal server error.", status=500)
+    
+def custom_404_view(request, exception):
+    return render_error(request, "Page not found.", status=404)
+
+def custom_500_view(request):
+    return render_error(request, "Internal server error.", status=500)
+
+def logout_view(request):
+    if request.method in ["POST", "GET"]:
+        logout(request)
+        return redirect('login')
+    else:
+        return redirect('login')

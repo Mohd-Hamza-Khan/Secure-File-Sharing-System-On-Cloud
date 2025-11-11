@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{% static 'img/bg4.jpg' %}") no-repeat center center fixed;
+            {% comment %} background: #f8d7da; {% endcomment %}
+            color: #721c24;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            min-height: 100vh;
+        }
+        .error-box {
+            background: #f5c6cb;
+            border: 1px solid #f1b0b7;
+            padding: 30px 50px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        a {
+            color: #721c24;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="py-4">
+    <div class="error-box">
+        <h2>Oops! Something went wrong.</h2>
+        <p>{{ message }}</p>
+        <a href="{% url 'index' %}">Go back home</a>
+    </div>
+</body>
+</html>
