@@ -18,6 +18,7 @@ def get_fernet():
         key = key.encode()
     return Fernet(key)
 
+@login_required
 def index(request):
     files = SecureFile.objects.all()
     return render(request, "index.html", {"files": files})
