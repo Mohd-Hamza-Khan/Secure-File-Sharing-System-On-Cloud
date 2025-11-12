@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import RegistrationForm, FileUploadForm
 from django.contrib.auth.models import User
 from django.contrib import messages
+import re # import regX module to use search function for special character
 
 
 def get_fernet():
@@ -27,14 +28,31 @@ def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
+            createpassword = form.cleaned_data['password']
+            confirmpassword = form.cleaned_data.get('confirm_password')
+
+            # Password match check
+            if createpassword != confirmpassword:
+                messages.error(request, "Passwords do not match.")
+                return render(request, 'register.html', {'form': form})
+            
+            # Password length check
+            if len(createpassword) < 8:
+                messages.error(request, "Password should be at least 8 characters long.")
+                return render(request, 'register.html', {'form': form})
+            
+            # Password strength check (special character)
+            if bool(re.search('^[a-zA-Z0-9]*$', createpassword)):
+                messages.warning(request, "Very weak password — add at least one special character.")
+                return render(request, 'register.html', {'form': form})
+            
+            # If all checks pass — create user
             User.objects.create_user(
                 username=form.cleaned_data['username'],
-                password=form.cleaned_data['password']
+                password=createpassword
             )
-            # Set a success message
             messages.success(request, 'Registration successful! You can now log in.')
-            # Redirect to login page
-            return redirect('login')  # Use your actual login URL name
+            return redirect('login')
     else:
         form = RegistrationForm()
 

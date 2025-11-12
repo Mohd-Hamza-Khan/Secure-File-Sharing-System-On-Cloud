@@ -9,9 +9,9 @@
   <style>
     body {
       {% if request.path == '/login/' %}
-        background: url("{% static 'img/bg1.png' %}") no-repeat center center fixed;
-      {% elif request.path == '/register/' %}
         background: url("{% static 'img/bg2.avif' %}") no-repeat center center fixed;
+      {% elif request.path == '/register/' %}
+        background: url("{% static 'img/bg1.png' %}") no-repeat center center fixed;
       {% else %}
         background: url("{% static 'img/bg3.jpg' %}") no-repeat center center fixed;
       {% endif %}
@@ -34,6 +34,7 @@
 <body class="py-4">
   <div class="container">
     {% include "navbar.html" %}
+    <h1 class="text-center text-white">Secure File Sharing System</h1>
     {% block content %}{% endblock %}
   </div>
 </body>
