@@ -136,6 +136,5 @@ This project encrypts uploaded files (using Fernet symmetric encryption), saves 
 
 ## Notes & troubleshooting
 - If you see errors like `no such table: core_securefile` or missing columns (OperationalError), run `makemigrations` and `migrate`. If models changed after initial migrations, consider creating new migrations or resetting the DB in development.
-- Ensure the model field used to store file path matches the database column type (use FileField or CharField
-=======
->>>>>>> 75fc39a841c78d3fdb5748a61472b30a2803dbff
+
+## live project url :- https://secure-file-sharing-system-on-cloud.onrender.com/
