@@ -1,30 +1,115 @@
-{% extends "base.html" %} {% block content %} 
-{% if messages %} {% for message in messages %}
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+{% if messages %}
+{% for message in messages %}
 <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
   {{ message }}
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
-{% endfor %} {% endif %}
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-4">
-      <!-- Reduced width from col-md-6 to col-md-4 -->
-      <div class="card shadow-sm">
-        <div class="card-header text-center bg-success text-white">
-          <h4 class="mb-0">Upload File</h4>
-        </div>
-        <div class="card-body text-center">
-          <!-- Center all content inside -->
-          <form method="post" class="text-start" enctype="multipart/form-data">
-            <!-- Align labels left -->
-            {% csrf_token %} {{ form.as_p }}
-            <div class="d-grid mt-3">
-              <button type="submit" class="btn btn-success">Upload</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+{% endfor %}
+{% endif %}
+
+<style>
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --bg-dark: #0f172a;
+  --card: rgba(30, 41, 59, 0.78);
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+}
+
+.container-upload{
+  min-height:70vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.card-upload{
+  background:var(--card);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(99,102,241,0.25);
+  border-radius:1.25rem;
+  padding:2.5rem 2rem;
+  width:100%;
+  max-width:440px;
+  box-shadow:0 25px 60px -12px rgba(0,0,0,.65);
+}
+
+.card-upload:hover{
+  transform:translateY(-6px);
+  box-shadow:0 30px 70px -12px rgba(99,102,241,.25);
+}
+
+.card-upload h4{
+  text-align:center;
+  margin-bottom:1.5rem;
+  font-weight:700;
+  background:linear-gradient(90deg,#c084fc,#818cf8,#a78bfa);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.card-upload label{
+  display:block;
+  margin-bottom:.45rem;
+  font-size:.9rem;
+  color:var(--text-muted);
+}
+
+.card-upload input{
+  width:100%;
+  padding:.95rem 1rem;
+  border:1px solid rgba(148,163,184,.3);
+  border-radius:.75rem;
+  background:rgba(15,23,42,.65);
+  color:white;
+  font-size:1rem;
+}
+
+.card-upload input:focus{
+  outline:none;
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(99,102,241,.25);
+}
+
+.btn-upload{
+  width:100%;
+  padding:1rem;
+  margin-top:.8rem;
+  border:none;
+  border-radius:.75rem;
+  font-weight:600;
+  font-size:1rem;
+  cursor:pointer;
+  background:linear-gradient(90deg,var(--primary),var(--primary-dark));
+  color:white;
+}
+
+.btn-upload:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 30px -10px rgba(99,102,241,.55);
+}
+</style>
+
+<div class="container-upload">
+  <div class="card-upload">
+
+    <h4>Upload File</h4>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <button type="submit" class="btn-upload">
+        Upload
+      </button>
+    </form>
+
   </div>
 </div>
+
 {% endblock %}

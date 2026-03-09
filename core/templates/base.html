@@ -7,34 +7,28 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
-    body {
-      {% if request.path == '/login/' %}
-        background: url("{% static 'img/bg2.avif' %}") no-repeat center center fixed;
-      {% elif request.path == '/register/' %}
-        background: url("{% static 'img/bg1.png' %}") no-repeat center center fixed;
-      {% else %}
-        background: url("{% static 'img/bg3.jpg' %}") no-repeat center center fixed;
-      {% endif %}
-      background-size: cover;
-      min-height: 100vh;
+    :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --bg-dark: #0f172a;
+        --card: rgba(30, 41, 59, 0.78);
+        --text: #e2e8f0;
+        --text-muted: #94a3b8;
+    }
+    body{
+        min-height:100vh;
+        top:0;
+        font-family:system-ui,-apple-system,sans-serif;
+        background: var(--bg-dark) url('https://thumbs.dreamstime.com/b/futuristic-neon-wireframe-padlock-symbolizing-cybersecurity-data-encryption-privacy-digital-network-rendered-glowing-blue-426921878.jpg') no-repeat center center fixed;
+        background-size:cover;
+        color:var(--text);
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(41, 28, 35, 0.4);
-      z-index: -1;
-    }
   </style>
 </head>
 <body class="py-4">
   <div class="container">
     {% include "navbar.html" %}
-    <h1 class="text-center text-white">Secure File Sharing System</h1>
     {% block content %}{% endblock %}
   </div>
 </body>

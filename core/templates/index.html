@@ -1,88 +1,150 @@
 {% extends "base.html" %}
 {% block content %}
 
-
 <style>
-  /* --- Stylish Table CSS --- */
-  .table-container {
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    padding: 20px;
-    overflow-x: auto;
-  }
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --bg-dark: #0f172a;
+  --card: rgba(30, 41, 59, 0.78);
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+}
 
-  .table thead th {
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    color: #fff;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 600;
-    border: none;
-    padding: 12px;
-  }
+/* container */
+.files-container{
+  min-height:60vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:2rem;
+}
 
-  .table tbody tr {
-    transition: all 0.2s ease-in-out;
-  }
+/* glass card */
+.files-card{
+  width:100%;
+  max-width:900px;
+  background:var(--card);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(99,102,241,0.25);
+  border-radius:1.25rem;
+  padding:2rem;
+  box-shadow:0 25px 60px -12px rgba(0,0,0,.65);
+}
 
-  .table tbody tr:hover {
-    background-color: #f6f9ff;
-    transform: scale(1.01);
-  }
+.files-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 30px 70px -12px rgba(99,102,241,.25);
+}
 
-  .table td {
-    vertical-align: middle;
-    padding: 12px;
-  }
+/* title */
+.files-card h3{
+  text-align:center;
+  font-weight:700;
+  margin-bottom:1.5rem;
+  background:linear-gradient(90deg,#c084fc,#818cf8,#a78bfa);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
 
-  .btn-primary {
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    border: none;
-    transition: 0.3s;
-  }
+/* table */
+.table{
+  color:var(--text);
+  margin-bottom:0;
+  --bs-table-bg: rgba(19, 19, 20, 0.8);
+  --bs-table-color: rgba(225, 225, 236, 0.8);
 
-  .btn-primary:hover {
-    background: linear-gradient(135deg, #2575fc, #6a11cb);
-    transform: translateY(-1px);
-  }
+}
 
-  .text-muted {
-    font-style: italic;
-  }
+.table thead th{
+  background:rgba(15,23,42,.8);
+  border:none;
+  color:var(--text-muted);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+
+.table tbody tr{
+  border-bottom:1px solid rgba(148,163,184,.15);
+  transition:all .2s ease;
+}
+
+.table tbody tr:hover{
+  background:rgba(23, 23, 206, 0.08);
+  transform:scale(1.01);
+}
+
+.table td{
+  padding:12px;
+  vertical-align:middle;
+}
+
+/* button */
+.btn-download{
+  background:linear-gradient(90deg,var(--primary),var(--primary-dark));
+  border:none;
+  padding:.45rem .8rem;
+  border-radius:.5rem;
+  font-size:.85rem;
+  color:white;
+  font-weight:500;
+}
+
+.btn-download:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 20px rgba(99,102,241,.4);
+}
+
+.text-muted{
+  color:var(--text-muted) !important;
+  font-style:italic;
+}
 </style>
 
-<h3 class="text-center text-warning">Uploaded Files</h3>
 
-<div class="table-container">
-  <table class="table table-hover align-middle mb-0">
-    <thead>
-      <tr>
-        <th>Filename</th>
-        <th>Receiver</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for f in files %}
+<div class="files-container">
+
+  <div class="files-card">
+
+    <h3>Uploaded Files</h3>
+
+    <table class="table table align-middle">
+      <thead>
+        <tr>
+          <th>Filename</th>
+          <th>Receiver</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for f in files %}
         <tr>
           <td>{{ f.filename }}</td>
           <td>{{ f.uploaded_by }}</td>
           <td>
             {% if user.is_authenticated %}
-              <a href="{% url 'download' f.pk %}" class="btn btn-sm btn-primary">Download (decrypt)</a>
+              <a href="{% url 'download' f.pk %}" class="btn btn-download">
+                Download (decrypt)
+              </a>
             {% else %}
               <span class="text-muted">Login to download the file</span>
             {% endif %}
           </td>
         </tr>
-      {% empty %}
+        {% empty %}
         <tr>
-          <td colspan="3" class="text-center text-muted">No files yet</td>
+          <td colspan="3" class="text-center text-muted">
+            No files yet
+          </td>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        {% endfor %}
+      </tbody>
+
+    </table>
+
+  </div>
+
 </div>
 
 {% endblock %}
